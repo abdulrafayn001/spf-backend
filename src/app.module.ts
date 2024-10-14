@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { FinancialProfilesModule } from './financial-profiles/financial-profiles.module';
+import { FinancialAccountsModule } from './financial-accounts/financial-accounts.module';
 
 @Module({
   imports: [
@@ -17,12 +19,15 @@ import { AuthModule } from './auth/auth.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        autoLoadEntities: true,
         synchronize: true, // Set to false in production
       }),
       inject: [ConfigService],
     }),
     UsersModule,
     AuthModule,
+    FinancialProfilesModule,
+    FinancialAccountsModule,
   ],
 })
 export class AppModule {}
