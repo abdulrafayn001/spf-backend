@@ -41,9 +41,6 @@ export class UserFinancialProfile {
   })
   riskTolerance: RiskTolerance;
 
-  @Column({ nullable: true })
-  occupation: string;
-
   @Column({ default: false })
   isProfileComplete: boolean;
 
