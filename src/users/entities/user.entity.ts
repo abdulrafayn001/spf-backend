@@ -46,7 +46,6 @@ export class User {
     eager: true,
     cascade: true,
   })
-  @JoinColumn()
   financialProfile: UserFinancialProfile;
 
   @OneToMany(() => FinancialAccount, (account) => account.user)
