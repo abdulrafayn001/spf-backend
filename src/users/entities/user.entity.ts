@@ -4,13 +4,18 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { FinancialAccount } from 'src/financial-accounts/entities/financial-account.etity';
+import { UserFinancialProfile } from 'src/financial-profiles/entities/financial-profile.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ unique: true })
   email: string;
@@ -25,9 +30,24 @@ export class User {
   @Column()
   lastName: string;
 
-  @CreateDateColumn()
+  @Column({ nullable: true })
+  dateOfBirth: Date;
+
+  @Column({ nullable: true })
+  occupation: string;
+
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
+
+  @OneToOne(() => UserFinancialProfile, (profile) => profile.user, {
+    eager: true,
+    cascade: true,
+  })
+  financialProfile: UserFinancialProfile;
+
+  @OneToMany(() => FinancialAccount, (account) => account.user)
+  financialAccounts: FinancialAccount[];
 }

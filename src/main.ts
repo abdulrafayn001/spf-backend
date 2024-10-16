@@ -1,6 +1,10 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Logger,
+  ValidationPipe,
+} from '@nestjs/common';
 
 async function bootstrap() {
   const port = process.env.PORT || 3000;
@@ -16,6 +20,7 @@ async function bootstrap() {
   app.enableCors(corsOptions);
 
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   await app.listen(port);
   logger.log(`Application listening on ${port}`);
